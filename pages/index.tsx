@@ -1,5 +1,3 @@
-import Head from "next/head"
-import Image from "next/image"
 import { Inter } from "@next/font/google"
 import { Button, HTag, P, Rating } from "../components"
 import { HTagValues } from "../components/HTag/HTag.props"
@@ -12,10 +10,13 @@ import { Tag } from "../components/Tag/Tag"
 import { TagSizes } from "../components/Tag/Tag.props"
 import { useState } from "react"
 import { withLayout } from "../layout/Layout"
+import { GetStaticProps } from "next"
+import axios from "axios"
+import { IMenuItem } from "../interfaces/menu.interface"
 
 const inter = Inter({ subsets: ["latin"] })
 
-function Home(): React.JSX.Element {
+function Home({ menu }: IHomeProps): React.JSX.Element {
   const [counter, setCounter] = useState<number>(3)
 
   return (
@@ -39,3 +40,23 @@ function Home(): React.JSX.Element {
 }
 
 export default withLayout(Home)
+
+export const getStaticProps: GetStaticProps<IHomeProps> = async () => {
+  const firstCategory = 0
+  const { data: menu } = await axios.post<Array<IMenuItem>>(
+    process.env.NEXT_PUBLIC_DOMAIN + "/api/top-page/find",
+    { firstCategory }
+  )
+
+  return {
+    props: {
+      menu,
+      firstCategory,
+    },
+  }
+}
+
+export interface IHomeProps extends Record<string, unknown> {
+  menu: Array<IMenuItem>
+  firstCategory: number
+}
