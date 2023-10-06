@@ -1,15 +1,39 @@
 import styles from "./TopPageComponent.module.css"
 import { ITopPageComponentProps } from "./TopPageComponent.props"
-import { Advantages, Card, HTag, HhData, P, Tag } from "../../components"
+import {
+  Advantages,
+  Card,
+  HTag,
+  HhData,
+  P,
+  Product,
+  Sort,
+  Tag,
+} from "../../components"
 import { TagColors, TagSizes } from "../../components/Tag/Tag.props"
 import { HTagValues } from "../../components/HTag/HTag.props"
 import { ETopLevelCategory } from "../../interfaces/page.interface"
+import { ESortValues } from "../../components/Sort/Sort.props"
+import { useReducer } from "react"
+import { sortReducer } from "./sort.reducer"
 
 export const TopPageComponent = ({
   page,
   products,
   firstCategory,
 }: ITopPageComponentProps): React.JSX.Element => {
+  const [{ products: sortedProducts, sort }, dispatchSort] = useReducer(
+    sortReducer,
+    {
+      products,
+      sort: ESortValues.Rating,
+    }
+  )
+
+  const setSort = (sort: ESortValues) => {
+    dispatchSort({ type: sort })
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>
@@ -19,11 +43,12 @@ export const TopPageComponent = ({
             {products.length}
           </Tag>
         )}
-        <span>Сортировка</span>
+        <Sort sort={sort} setSort={setSort} />
       </div>
 
       <div>
-        {products && products.map((p) => <div key={p._id}>{p.title}</div>)}
+        {sortedProducts &&
+          sortedProducts.map((p) => <Product key={p._id} product={p} />)}
       </div>
 
       <div className={styles.HHTitle}>

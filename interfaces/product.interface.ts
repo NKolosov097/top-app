@@ -29,7 +29,8 @@ export interface IProductModel {
   image: string
   initialRating: number
   reviews: Array<IReviewModel>
-  reviewsCount: number
+  reviewCount: number
   reviewAvg?: number
-  advantages: string
+  advantages?: string
+  disadvantages?: string
 }

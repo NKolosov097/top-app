@@ -1,5 +1,5 @@
 import { Inter } from "@next/font/google"
-import { Button, HTag, P, Rating } from "../components"
+import { Button, HTag, Input, P, Rating, Textarea } from "../components"
 import { HTagValues } from "../components/HTag/HTag.props"
 import {
   ButtonAppearance,
@@ -35,6 +35,8 @@ function Home({ menu }: IHomeProps): React.JSX.Element {
       <P size={PSizes.s}>I am Paragraph</P>
       <Tag size={TagSizes.m}>I am Tag</Tag>
       <Rating rating={counter} setRating={setCounter} isEditable></Rating>
+      <Input />
+      <Textarea />
     </>
   )
 }
