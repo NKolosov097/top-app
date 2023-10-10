@@ -10,6 +10,7 @@ import { ParsedUrlQuery } from "querystring"
 import { IProductModel } from "../../interfaces/product.interface"
 import { firstLevelMenu } from "../../helpers/helpers"
 import { TopPageComponent } from "../../page-components"
+import { API } from "../../helpers/api"
 
 function TopPage({
   page,
@@ -31,7 +32,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   let paths: Array<string> = []
   for (const m of firstLevelMenu) {
     const { data: menu } = await axios.post<Array<IMenuItem>>(
-      process.env.NEXT_PUBLIC_DOMAIN + "/api/top-page/find",
+      API.topPage.find,
       { firstCategory: m.id }
     )
 
@@ -56,7 +57,7 @@ export const getStaticProps: GetStaticProps<ITopPageProps> = async ({
 
   try {
     const { data: menu } = await axios.post<Array<IMenuItem>>(
-      process.env.NEXT_PUBLIC_DOMAIN + "/api/top-page/find",
+      API.topPage.find,
       { firstCategory: firstCategoryItem.id }
     )
     if (menu.length === 0) {
@@ -64,10 +65,10 @@ export const getStaticProps: GetStaticProps<ITopPageProps> = async ({
     }
 
     const { data: page } = await axios.get<ITopPageModel>(
-      process.env.NEXT_PUBLIC_DOMAIN + "/api/top-page/byAlias/" + params.alias
+      API.topPage.byAlias + params.alias
     )
     const { data: products } = await axios.post<Array<IProductModel>>(
-      process.env.NEXT_PUBLIC_DOMAIN + "/api/product/find",
+      API.product.find,
       { category: page.category, limit: 10 }
     )
 

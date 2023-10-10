@@ -1,3 +1,7 @@
+.filled {
+  position: relative;
+}
+
 .filled > svg {
   fill: var(--primary);
 }
@@ -8,4 +12,15 @@
 
 .editable {
   cursor: pointer;
+}
+
+.error svg {
+  stroke: var(--red);
+}
+
+.errorMessage {
+  position: absolute;
+  bottom: -21px;
+  left: 0;
+  color: var(--red);
 }

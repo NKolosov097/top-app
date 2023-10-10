@@ -4,6 +4,7 @@ import { withLayout } from "../../layout/Layout"
 import { IMenuItem } from "../../interfaces/menu.interface"
 import { firstLevelMenu } from "../../helpers/helpers"
 import { ParsedUrlQuery } from "querystring"
+import { API } from "../../helpers/api"
 
 function Type({ firstCategory }: ITypeProps): React.JSX.Element {
   return <>Type: {firstCategory}</>
@@ -25,10 +26,9 @@ export const getStaticProps: GetStaticProps<ITypeProps> = async ({
 
   const firstCategoryItem = firstLevelMenu.find((m) => m.route === params.type)
   if (!firstCategoryItem) return { notFound: true }
-  const { data: menu } = await axios.post<Array<IMenuItem>>(
-    process.env.NEXT_PUBLIC_DOMAIN + "/api/top-page/find",
-    { firstCategory: firstCategoryItem.id }
-  )
+  const { data: menu } = await axios.post<Array<IMenuItem>>(API.topPage.find, {
+    firstCategory: firstCategoryItem.id,
+  })
 
   return {
     props: {

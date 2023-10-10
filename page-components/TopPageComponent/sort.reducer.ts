@@ -4,6 +4,7 @@ import { IProductModel } from "../../interfaces/product.interface"
 export type TSortActions =
   | { type: ESortValues.Price }
   | { type: ESortValues.Rating }
+  | { type: "reset"; initialState: Array<IProductModel> }
 
 export interface ISortReducerState {
   sort: ESortValues
@@ -26,6 +27,12 @@ export const sortReducer = (
       return {
         sort: ESortValues.Price,
         products: state.products.sort((a, b) => (a.price > b.price ? 1 : -1)),
+      }
+
+    case "reset":
+      return {
+        sort: ESortValues.Rating,
+        products: action.initialState,
       }
     default:
       return state
