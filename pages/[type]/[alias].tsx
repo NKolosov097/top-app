@@ -11,6 +11,7 @@ import { IProductModel } from "../../interfaces/product.interface"
 import { firstLevelMenu } from "../../helpers/helpers"
 import { TopPageComponent } from "../../page-components"
 import { API } from "../../helpers/api"
+import Head from "next/head"
 
 function TopPage({
   page,
@@ -18,11 +19,20 @@ function TopPage({
   firstCategory,
 }: ITopPageProps): React.JSX.Element {
   return (
-    <TopPageComponent
-      page={page}
-      products={products}
-      firstCategory={firstCategory}
-    />
+    <>
+      <Head>
+        <title>{page.metaTitle}</title>
+        <meta name="description" content={page.metaDescription} />
+        <meta property="og:title" content={page.metaTitle} />
+        <meta property="og:description" content={page.metaDescription} />
+        <meta property="og:type" content="article" />
+      </Head>
+      <TopPageComponent
+        page={page}
+        products={products}
+        firstCategory={firstCategory}
+      />
+    </>
   )
 }
 
