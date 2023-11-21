@@ -24,12 +24,26 @@ export const Product = motion(
     ): React.JSX.Element => {
       const [isReviewOpened, setIsReviewOpened] = useState<boolean>(false)
       const reviewRef = useRef<HTMLDivElement>(null)
+
+      const variants = {
+        visible: {
+          opacity: 1,
+          height: "auto",
+        },
+        hidden: {
+          opacity: 0,
+          height: 0,
+        },
+      }
+
       const scrollToReview = () => {
         setIsReviewOpened(true)
         reviewRef.current?.scrollIntoView({
           behavior: "smooth",
           block: "center",
         })
+
+        reviewRef.current?.focus()
       }
 
       return (
@@ -45,18 +59,27 @@ export const Product = motion(
             </div>
             <div className={styles.title}>{product.title}</div>
             <div className={styles.price}>
-              {priceRu(product.price)}
+              <span>
+                <span className="visuallyHidden">Цена</span>
+                {priceRu(product.price)}
+              </span>
+
               {product.oldPrice && (
                 <Tag className={styles.oldPrice} color={TagColors.green}>
+                  <span className="visuallyHidden">скидка</span>
                   {priceRu(product.price - product.oldPrice)}
                 </Tag>
               )}
             </div>
             <div className={styles.credit}>
+              <span className="visuallyHidden">кредит</span>
               {priceRu(product.credit)}
               <span className={styles.month}>/мес</span>
             </div>
             <div className={styles.rating}>
+              <span className="visuallyHidden">
+                {"рейтинг" + (product.reviewAvg ?? product.initialRating)}
+              </span>
               <Rating rating={product.reviewAvg ?? product.initialRating} />
             </div>
             <div className={styles.tags}>
@@ -70,8 +93,12 @@ export const Product = motion(
                 </Tag>
               ))}
             </div>
-            <div className={styles.priceTitle}>цена</div>
-            <div className={styles.creditTitle}>кредит</div>
+            <div className={styles.priceTitle} aria-hidden={true}>
+              цена
+            </div>
+            <div className={styles.creditTitle} aria-hidden={true}>
+              кредит
+            </div>
             <div className={styles.rateTitle}>
               <a href="#ref" onClick={scrollToReview}>
                 {product.reviewCount}{" "}
@@ -117,27 +144,32 @@ export const Product = motion(
                 className={styles.reviewButton}
                 appearance={ButtonAppearance.ghost}
                 arrow={isReviewOpened ? ButtonArrow.down : ButtonArrow.right}
+                aria-expanded={isReviewOpened}
               >
-                Читать подробнее
+                Читать отзывы
               </Button>
             </div>
           </Card>
-          <Card
-            color={CardColors.blue}
-            className={cn(styles.reviews, {
-              [styles.opened]: isReviewOpened,
-              [styles.closed]: !isReviewOpened,
-            })}
-            ref={reviewRef}
+          <motion.div
+            animate={isReviewOpened ? "visible" : "hidden"}
+            variants={variants}
+            initial="hidden"
           >
-            {product.reviews.map((r) => (
-              <React.Fragment key={r._id}>
-                <Review review={r} />
-                <Divider />
-              </React.Fragment>
-            ))}
-            <ReviewForm productId={product._id} />
-          </Card>
+            <Card
+              color={CardColors.blue}
+              className={styles.reviews}
+              ref={reviewRef}
+              tabIndex={isReviewOpened ? 0 : -1}
+            >
+              {product.reviews.map((r) => (
+                <React.Fragment key={r._id}>
+                  <Review review={r} />
+                  <Divider />
+                </React.Fragment>
+              ))}
+              <ReviewForm productId={product._id} isOpened={isReviewOpened} />
+            </Card>
+          </motion.div>
         </div>
       )
     }
