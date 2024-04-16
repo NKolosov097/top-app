@@ -1,4 +1,4 @@
-import styles from "./hhData.module.css"
+import styles from "./HhData.module.css"
 import { Card } from "../Card/Card"
 import RateIcon from "./rate.svg"
 import { IHhDataProps } from "./HhData.props"
