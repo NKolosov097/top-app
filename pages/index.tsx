@@ -21,24 +21,21 @@ function Home({ menu }: IHomeProps): React.JSX.Element {
   const [counter, setCounter] = useState<number>(3)
 
   return (
-    <>
-      <HTag tag={HTagValues.h1}>Some Text</HTag>
-      <Button
-        appearance={ButtonAppearance.primary}
-        onClick={() => console.log("ji")}
-        arrow={ButtonArrow.right}
-      >
-        Кнопка
-      </Button>
-      <Button appearance={ButtonAppearance.ghost} arrow={ButtonArrow.down}>
-        Кнопка
-      </Button>
-      <P size={PSizes.s}>I am Paragraph</P>
-      <Tag size={TagSizes.m}>I am Tag</Tag>
-      <Rating rating={counter} setRating={setCounter} isEditable></Rating>
-      <Input />
-      <Textarea />
-    </>
+    <section>
+      <HTag tag={HTagValues.h1} >
+        <div style={{ width: '100%', textAlign: 'center', color: 'var(--primary);' }}>
+          OWL top
+        </div>
+      </HTag>
+
+      <P size={PSizes.l} style={{ marginTop: 20 }}>В этом приложении Вы можете посмотреть каталог всех курсов и посмотреть реализацию доступности</P>
+
+      <P size={PSizes.m} style={{ marginTop: 40 }}>
+        Можете посмотреть другие проекты и дать обратную связь тут &nbsp;
+        <a href="https://github.com/NKolosov097" style={{ color: 'var(--primary);' }}>@NKolosov097</a>
+        🙂
+      </P>
+    </section>
   )
 }
 
