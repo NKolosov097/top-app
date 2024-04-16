@@ -3,6 +3,5 @@ services:
   app:
     image: top-app
     container_name: top-app
-    restrat: always
     ports:
     - 3000:3000
